@@ -857,15 +857,15 @@ def build_asset_state(plan, asset_name, dxy_state):
     structure = plan.get("structure_state") if isinstance(plan, dict) else None
     momentum  = plan.get("momentum") if isinstance(plan, dict) else None
 
-    # ---- Trend exhaustion ----
-    exhaustion = detect_exhaustion(momentum, structure)
-
     # ---- Derivatives context ----
     derivatives = {
         "funding": plan.get("funding"),
         "open_interest": plan.get("open_interest"),
         "long_short_ratio": plan.get("long_short_ratio"),
     }
+
+    # ---- Trend exhaustion ----
+    exhaustion = detect_exhaustion(momentum, structure, derivatives)
 
     # ---- Macro tailwind / headwind ----
     dxy_trend = None
@@ -976,6 +976,9 @@ for asset in ["btc", "paxg"]:
 
     if ex == "WEAKENING":
         st.warning(f"⚠️ {asset.upper()} trend weakening — pullback risk rising")
+
+    if ex == "EXHAUSTED":
+        st.error(f"🚨 {asset.upper()} trend exhausted — reversal risk elevated")
 
     if ex == "COMPRESSION":
         st.info(f"⚡ {asset.upper()} volatility compression — breakout or reversal soon")
