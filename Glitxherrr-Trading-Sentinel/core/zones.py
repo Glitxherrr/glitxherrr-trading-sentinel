@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+from core.structure import detect_swings
+
 
 def sr_zones(df: pd.DataFrame, lookback: int = 200):
     """
@@ -13,8 +15,12 @@ def sr_zones(df: pd.DataFrame, lookback: int = 200):
 
     recent = df.tail(lookback).copy()
 
-    highs = recent["high"].nlargest(6).values
-    lows  = recent["low"].nsmallest(6).values
+    swing_df = detect_swings(recent, left=3, right=3)
+    swing_highs = swing_df[swing_df["swing_high"]]["high"].tail(8).values
+    swing_lows = swing_df[swing_df["swing_low"]]["low"].tail(8).values
+
+    highs = swing_highs if len(swing_highs) >= 3 else recent["high"].nlargest(6).values
+    lows = swing_lows if len(swing_lows) >= 3 else recent["low"].nsmallest(6).values
 
     raw_zones = []
 
@@ -98,19 +104,23 @@ def merge_zones(zones, overlap_threshold=0.0015):
     if not zones:
         return []
 
-    zones = sorted(zones, key=lambda z: z["bottom"])
-    merged = [zones[0]]
+    merged = []
 
-    for z in zones[1:]:
+    for zone_type in ("support", "resistance"):
+        group = [z for z in zones if z["type"] == zone_type]
+        if not group:
+            continue
+        group = sorted(group, key=lambda z: z["bottom"])
+        group_merged = [group[0]]
 
-        last = merged[-1]
+        for z in group[1:]:
+            last = group_merged[-1]
+            if z["bottom"] <= last["top"] * (1 + overlap_threshold):
+                last["top"] = max(last["top"], z["top"])
+                last["bottom"] = min(last["bottom"], z["bottom"])
+            else:
+                group_merged.append(z)
 
-        if z["bottom"] <= last["top"] * (1 + overlap_threshold):
-
-            last["top"] = max(last["top"], z["top"])
-            last["bottom"] = min(last["bottom"], z["bottom"])
-
-        else:
-            merged.append(z)
+        merged.extend(group_merged)
 
     return merged

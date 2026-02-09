@@ -117,12 +117,12 @@ def detect_structure_state(df: pd.DataFrame, lookback: int = 80) -> dict:
 
     bos_dir = None
 
-    if sweep_dir == "down" and close_now > prev_high:
+    if close_now > prev_high:
         bos_dir = "up"
         structure["break_of_structure"] = "up"
         structure["bos_price"] = prev_high
 
-    elif sweep_dir == "up" and close_now < prev_low:
+    elif close_now < prev_low:
         bos_dir = "down"
         structure["break_of_structure"] = "down"
         structure["bos_price"] = prev_low
@@ -164,7 +164,7 @@ def detect_structure_state(df: pd.DataFrame, lookback: int = 80) -> dict:
 
     if bos_dir:
 
-        if sweep_dir:
+        if sweep_dir and bos_dir == sweep_dir:
             structure["structure_confidence"] = "HIGH"
             structure["structure_confidence_score"] = 3
 
