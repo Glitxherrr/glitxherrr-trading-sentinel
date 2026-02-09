@@ -1,0 +1,141 @@
+{
+  "timestamp": "2026-02-05T22:23:01.442817+05:30",
+  "state": {
+    "dxy": {
+      "structure": {
+        "trend": "Uptrend",
+        "state": "Higher Highs",
+        "recent_highs": 4,
+        "recent_lows": 5,
+        "last_high": 97.73300170898438,
+        "last_low": 97.2979965209961,
+        "liquidity_sweep": "up",
+        "sweep_price": 97.73300170898438,
+        "break_of_structure": null,
+        "bos_price": null,
+        "structure_confidence": "LOW",
+        "structure_confidence_score": 1
+      },
+      "trend": "DOWN",
+      "strength": "HIGH",
+      "bias": "BULLISH"
+    },
+    "btc": {
+      "structure": {
+        "trend": "Downtrend",
+        "state": "Lower Lows",
+        "recent_highs": 3,
+        "recent_lows": 7,
+        "last_high": 79360.0,
+        "last_low": 72945.5,
+        "liquidity_sweep": "down",
+        "sweep_price": 72945.5,
+        "break_of_structure": null,
+        "bos_price": null,
+        "structure_confidence": "LOW",
+        "structure_confidence_score": 1
+      },
+      "momentum": {
+        "trend_energy_pctile": 99.44,
+        "trend_slope": -2756.115,
+        "bb_squeeze": false,
+        "bb_squeeze_percentile": 90.0,
+        "sideways_regime": false,
+        "breakout_watch": false,
+        "breakout_direction": "NEUTRAL",
+        "momentum_score": 2.46,
+        "atr_pct": 1.6732,
+        "vol_spike": 2.082,
+        "obv_slope": -1771.828,
+        "flow_state": "DOWN",
+        "sideways": false
+      },
+      "derivatives": {
+        "funding": {
+          "fundingRate": -4.167e-05,
+          "fundingBps": -0.417,
+          "nextFundingTime": 1770336000000,
+          "markPrice": 68429.80175362
+        },
+        "open_interest": {
+          "openInterest": 94196.421
+        },
+        "long_short_ratio": {
+          "longShortRatio": 2.8402,
+          "longAccount": 0.7396,
+          "shortAccount": 0.2604
+        }
+      },
+      "exhaustion": "HEALTHY",
+      "derivatives_bias": "MIXED - Trend Continuation",
+      "macro_effect": "POTENTIAL_TAILWIND",
+      "bias": {
+        "htf": "Bearish",
+        "ltf": "Bearish"
+      }
+    },
+    "paxg": {
+      "structure": {
+        "trend": "Downtrend",
+        "state": "Lower Lows",
+        "recent_highs": 3,
+        "recent_lows": 4,
+        "last_high": 5118.0,
+        "last_low": 4463.73,
+        "liquidity_sweep": "down",
+        "sweep_price": 4463.73,
+        "break_of_structure": null,
+        "bos_price": null,
+        "structure_confidence": "LOW",
+        "structure_confidence_score": 1
+      },
+      "momentum": {
+        "trend_energy_pctile": 89.44,
+        "trend_slope": -2683.454,
+        "bb_squeeze": false,
+        "bb_squeeze_percentile": 23.75,
+        "sideways_regime": false,
+        "breakout_watch": false,
+        "breakout_direction": "NEUTRAL",
+        "momentum_score": 1.66,
+        "atr_pct": 1.1714,
+        "vol_spike": 1.065,
+        "obv_slope": -442.122,
+        "flow_state": "DOWN",
+        "sideways": false
+      },
+      "derivatives": {
+        "funding": {
+          "fundingRate": 5e-05,
+          "fundingBps": 0.5,
+          "nextFundingTime": 1770321600000,
+          "markPrice": 4911.04
+        },
+        "open_interest": {
+          "openInterest": 28066.911
+        },
+        "long_short_ratio": {
+          "longShortRatio": 1.767,
+          "longAccount": 0.6386,
+          "shortAccount": 0.3614
+        }
+      },
+      "exhaustion": "HEALTHY",
+      "derivatives_bias": "MIXED - Trend Continuation",
+      "macro_effect": "BULLISH_TAILWIND",
+      "bias": {
+        "htf": "Bullish",
+        "ltf": "Bearish"
+      }
+    },
+    "constraints": {
+      "allow_shorts": false,
+      "squeeze_risk": false,
+      "macro_risk_type": "event-driven",
+      "structure_bias": "Downtrend",
+      "bos_state": null,
+      "volume_state": "normal",
+      "lsr_state": "neutral"
+    }
+  }
+}
