@@ -2,50 +2,67 @@ def compute_derivatives_bias(struct, momentum, derivatives):
     funding = derivatives.get("funding", {})
     oi = derivatives.get("open_interest", {})
     lsr = derivatives.get("long_short_ratio", {})
-    
+
     fbps = funding.get("fundingBps")
     open_i = oi.get("openInterest")
     ratio = lsr.get("longShortRatio")
-    
-    atr = (momentum or {}).get("atr_pct")
-    vol = (momentum or {}).get("vol_spike")
+
+    structure = struct or {}
+    trend = str(structure.get("trend", "")).lower()
+    trend_dir = "neutral"
+    if "up" in trend:
+        trend_dir = "up"
+    elif "down" in trend:
+        trend_dir = "down"
+
+    flow = (momentum or {}).get("flow_state")
+    flow_dir = "neutral"
+    if flow == "UP":
+        flow_dir = "up"
+    elif flow == "DOWN":
+        flow_dir = "down"
 
     bullish = 0
     bearish = 0
 
-    # ---- Funding (crowd positioning) ----
+    # ---- Funding (positioning vs structure) ----
     if fbps is not None:
         if fbps < 0:
-            bullish += 2   # shorts paying = strong bullish fuel
+            if trend_dir == "up" or flow_dir == "up":
+                bullish += 2 if fbps <= -8 else 1
+            elif trend_dir == "down" or flow_dir == "down":
+                bearish += 2 if fbps <= -8 else 1
+            else:
+                bullish += 1
         elif fbps > 0:
-            bearish += 2   # longs crowded
+            if trend_dir == "down" or flow_dir == "down":
+                bearish += 2 if fbps >= 8 else 1
+            elif trend_dir == "up" or flow_dir == "up":
+                bearish += 1
+            else:
+                bearish += 1
 
     # ---- Long/Short ratio ----
     if ratio is not None:
         if ratio >= 2:
-            bearish += 1
+            bearish += 2 if trend_dir == "down" else 1
         elif ratio <= 0.6:
-            bullish += 1
+            if trend_dir == "up" or flow_dir == "up":
+                bullish += 2
+            elif trend_dir == "neutral":
+                bullish += 1
 
-    # ---- Open interest (fuel pressure) ----
-    if open_i is not None:
-        bullish += 1   # presence of leverage = movement potential
-
-    # ---- Volatility energy ----
-    if atr is not None:
-        if atr > 0.30:
-            bullish += 1
-        elif atr < 0.18:
-            bearish += 1
+    # ---- Open interest (context only, no directional bias) ----
+    _ = open_i
 
     # ---- Final synthesis ----
-    if bullish >= 3 and bearish == 0:
+    if bullish >= 3 and bullish >= bearish + 2:
         return "BULLISH"
 
-    if bearish >= 3:
+    if bearish >= 3 and bearish >= bullish + 2:
         return "BEARISH"
 
     if bullish == 0 and bearish == 0:
-        return "NEUTRAL - Dead Market"
+        return "NEUTRAL - Thin Derivatives"
 
-    return "MIXED - Trend Continuation"
+    return "MIXED - Positioning vs Trend"
