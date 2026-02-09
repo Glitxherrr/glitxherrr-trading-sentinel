@@ -289,21 +289,21 @@ def label_funding(fbps):
     if fbps is None:
         return "NA", "🟡 Medium"
     if fbps > 8:
-        return f"{fbps:.3f}", "❌ Bearish (crowded longs)"
+        return f"{fbps:.3f}", "⚠️ Crowded longs"
     if fbps < -8:
-        return f"{fbps:.3f}", "❌ Bearish (crowded shorts)"
+        return f"{fbps:.3f}", "⚠️ Crowded shorts"
     if fbps > 0:
-        return f"{fbps:.3f}", "✅ Bullish"
+        return f"{fbps:.3f}", "🟡 Longs paying"
     if fbps < 0:
-        return f"{fbps:.3f}", "✅ Bullish (shorts pay)"
-    return f"{fbps:.3f}", "🟡 Medium"
+        return f"{fbps:.3f}", "🟡 Shorts paying"
+    return f"{fbps:.3f}", "🟡 Neutral"
 
 
 def label_oi(oi):
     oi = safe_float(oi, None)
     if oi is None:
         return "NA", "🟡 Medium"
-    return f"{oi:.3f}", "🟡 Medium (fuel)"
+    return f"{oi:.3f}", "🟡 Open interest present"
 
 
 def label_lsr(ratio):
@@ -311,9 +311,9 @@ def label_lsr(ratio):
     if ratio is None:
         return "NA", "🟡 Medium"
     if ratio >= 2.0:
-        return f"{ratio:.3f}", "❌ Bearish (crowded longs)"
+        return f"{ratio:.3f}", "⚠️ Crowded longs"
     if ratio <= 0.6:
-        return f"{ratio:.3f}", "❌ Bearish (crowded shorts)"
+        return f"{ratio:.3f}", "⚠️ Crowded shorts"
     if 0.95 <= ratio <= 1.05:
         return f"{ratio:.3f}", "🟡 Medium (balanced)"
     return f"{ratio:.3f}", "🟡 Medium"
@@ -324,10 +324,10 @@ def label_atr(atrp):
     if atrp is None:
         return "NA", "🟡 Medium"
     if atrp >= 0.30:
-        return f"{atrp:.4f}", "✅ Bullish (movement)"
+        return f"{atrp:.4f}", "🟡 Expanding volatility"
     if atrp < 0.18:
-        return f"{atrp:.4f}", "❌ Bearish (tight)"
-    return f"{atrp:.4f}", "🟡 Medium"
+        return f"{atrp:.4f}", "🟡 Contracting volatility"
+    return f"{atrp:.4f}", "🟡 Normal"
 
 
 def label_vol_spike(vs):
